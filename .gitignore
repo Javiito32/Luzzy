@@ -1,0 +1,22 @@
+# Xcode (el proyecto se genera con XcodeGen)
+*.xcodeproj
+*.xcworkspace
+!Packages/**/*.xcworkspace
+xcuserdata/
+DerivedData/
+build/
+*.xcresult
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+
+# Secretos: nunca se versionan
+*.p8
+*.p12
+*.mobileprovision
+.env

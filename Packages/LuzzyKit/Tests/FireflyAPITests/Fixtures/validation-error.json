@@ -1,0 +1,1 @@
+{ "message": "The given data was invalid.", "errors": { "transactions.0.amount": ["The amount must be more than zero."] } }

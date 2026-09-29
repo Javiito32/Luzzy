@@ -1,0 +1,6 @@
+{
+  "data": [
+    { "type": "budget_limits", "id": "l1", "attributes": { "start": "2026-09-01T00:00:00+02:00", "end": "2026-09-30T23:59:59+02:00", "budget_id": "b1", "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2, "amount": "400.00", "spent": [ { "currency_code": "EUR", "sum": "-312.40" } ] } },
+    { "type": "budget_limits", "id": "l2", "attributes": { "start": "2026-09-01", "end": "2026-09-30", "budget_id": "b2", "currency_code": "EUR", "amount": "120", "spent": "-148.00" } }
+  ]
+}

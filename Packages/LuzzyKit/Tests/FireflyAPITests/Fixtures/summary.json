@@ -1,0 +1,7 @@
+{
+  "net-worth-in-EUR": { "key": "net-worth-in-EUR", "title": "Net worth", "monetary_value": 4480.85, "currency_id": "1", "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2, "value_parsed": "€4,480.85" },
+  "spent-in-EUR": { "key": "spent-in-EUR", "title": "Spent", "monetary_value": -1284.5, "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2 },
+  "earned-in-EUR": { "key": "earned-in-EUR", "title": "Earned", "monetary_value": 2450, "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2 },
+  "left-to-spend-in-EUR": { "key": "left-to-spend-in-EUR", "monetary_value": "400.85", "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2 },
+  "bills-unpaid-in-EUR": { "key": "bills-unpaid-in-EUR", "monetary_value": 789.9, "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2 }
+}

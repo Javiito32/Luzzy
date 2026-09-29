@@ -1,0 +1,75 @@
+{
+  "identifier" : "4C1D6E2A",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : true,
+      "internalID" : "6740000003",
+      "localizations" : [
+        { "description" : "Todas las funciones Premium para siempre.", "displayName" : "Luzzy Premium de por vida", "locale" : "es_ES" },
+        { "description" : "All Premium features, forever.", "displayName" : "Luzzy Premium Lifetime", "locale" : "en_US" }
+      ],
+      "productID" : "luzzy.premium.lifetime",
+      "referenceName" : "Premium Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "es_ES",
+    "_storefront" : "ESP",
+    "_storeKitErrors" : [ ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21000001",
+      "localizations" : [ ],
+      "name" : "Luzzy Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [ ],
+          "codeOffers" : [ ],
+          "displayPrice" : "2.99",
+          "familyShareable" : true,
+          "groupNumber" : 2,
+          "internalID" : "6740000001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            { "description" : "Todas las funciones Premium, cada mes.", "displayName" : "Luzzy Premium mensual", "locale" : "es_ES" },
+            { "description" : "All Premium features, billed monthly.", "displayName" : "Luzzy Premium Monthly", "locale" : "en_US" }
+          ],
+          "productID" : "luzzy.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "21000001",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [ ],
+          "codeOffers" : [ ],
+          "displayPrice" : "24.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "6740000002",
+          "introductoryOffer" : {
+            "internalID" : "6740000004",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P2W"
+          },
+          "localizations" : [
+            { "description" : "Todas las funciones Premium, cada año.", "displayName" : "Luzzy Premium anual", "locale" : "es_ES" },
+            { "description" : "All Premium features, billed yearly.", "displayName" : "Luzzy Premium Yearly", "locale" : "en_US" }
+          ],
+          "productID" : "luzzy.premium.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Yearly",
+          "subscriptionGroupID" : "21000001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : { "major" : 3, "minor" : 0 }
+}

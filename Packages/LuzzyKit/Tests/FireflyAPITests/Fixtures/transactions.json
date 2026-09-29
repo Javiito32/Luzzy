@@ -1,0 +1,68 @@
+{
+  "data": [
+    {
+      "type": "transactions",
+      "id": "100",
+      "attributes": {
+        "group_title": null,
+        "transactions": [
+          {
+            "transaction_journal_id": "1000",
+            "type": "withdrawal",
+            "date": "2026-09-29T00:00:00+02:00",
+            "amount": "54.20",
+            "currency_code": "EUR",
+            "currency_symbol": "€",
+            "currency_decimal_places": 2,
+            "description": "Compra semanal",
+            "source_id": "1",
+            "source_name": "Cuenta nómina",
+            "source_type": "Asset account",
+            "destination_id": "20",
+            "destination_name": "Supermercado",
+            "destination_type": "Expense account",
+            "budget_id": "b1",
+            "budget_name": "Supermercado",
+            "category_id": "c1",
+            "category_name": "Supermercado",
+            "bill_id": null,
+            "subscription_id": null,
+            "tags": ["compra"],
+            "notes": "",
+            "reconciled": false
+          }
+        ]
+      }
+    },
+    {
+      "type": "transactions",
+      "id": "101",
+      "attributes": {
+        "group_title": "Compra dividida",
+        "transactions": [
+          {
+            "transaction_journal_id": "1001",
+            "type": "withdrawal",
+            "date": "2026-09-28T12:30:00.000000+02:00",
+            "amount": "30.00",
+            "currency_code": "EUR",
+            "description": "Comida",
+            "source_id": "1", "source_name": "Cuenta nómina", "source_type": "Asset account",
+            "destination_id": "20", "destination_name": "Supermercado", "destination_type": "Expense account"
+          },
+          {
+            "transaction_journal_id": "1002",
+            "type": "withdrawal",
+            "date": "2026-09-28T12:30:00.000000+02:00",
+            "amount": "12.50",
+            "currency_code": "EUR",
+            "description": "Limpieza",
+            "source_id": "1", "source_name": "Cuenta nómina", "source_type": "Asset account",
+            "destination_id": "20", "destination_name": "Supermercado", "destination_type": "Expense account"
+          }
+        ]
+      }
+    }
+  ],
+  "meta": { "pagination": { "total": 40, "count": 2, "per_page": 2, "current_page": 1, "total_pages": 20 } }
+}

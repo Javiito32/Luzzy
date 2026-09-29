@@ -1,0 +1,7 @@
+{
+  "data": [
+    { "type": "budgets", "id": "b1", "attributes": { "name": "Supermercado", "active": true, "spent": [ { "currency_code": "EUR", "currency_symbol": "€", "currency_decimal_places": 2, "sum": "-312.40" } ] } },
+    { "type": "budgets", "id": "b2", "attributes": { "name": "Ocio", "active": true, "spent": [] } }
+  ],
+  "meta": { "pagination": { "total": 2, "count": 2, "per_page": 100, "current_page": 1, "total_pages": 1 } }
+}
