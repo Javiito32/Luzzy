@@ -31,6 +31,8 @@ final class AppModel {
     private(set) var isLocked = false
     /// Cubre la interfaz cuando la app no está activa (captura del selector de apps).
     private(set) var isShielded = false
+    /// Cuenta elegida para el plan gratuito en la sesión actual.
+    private(set) var freeAccountID: EntityID?
 
     let settings = AppSettings()
     let purchases = PurchaseManager(configuration: AppConfiguration.store)
@@ -48,6 +50,19 @@ final class AppModel {
         credentials = FireflyCredentialStore(keychain: keychain)
     }
 
+    /// Ámbito de acceso según el plan: Premium ve todo; gratis, una cuenta.
+    var accessScope: AccessScope {
+        purchases.isPremium ? .full : .singleAccount(freeAccountID)
+    }
+
+    /// Fija la cuenta del plan gratuito y la guarda con el perfil (en el Llavero).
+    func selectFreeAccount(_ accountID: EntityID) {
+        freeAccountID = accountID
+        guard var profile = session?.profile else { return }
+        profile.freeAccountID = accountID
+        try? profiles.save(profile)
+    }
+
     var session: Session? {
         if case .ready(let session) = phase { return session }
         return nil
@@ -58,6 +73,8 @@ final class AppModel {
     func bootstrap() async {
         guard case .launching = phase else { return }
         purchases.start()
+        // El plan se resuelve antes de mostrar datos (StoreKit lo tiene en local).
+        await purchases.refreshEntitlement()
         isLocked = settings.appLockEnabled
         if let profile = profiles.activeProfile(), (try? credentials.credential(for: profile.id)) != nil {
             phase = .ready(await makeSession(for: profile))
@@ -106,6 +123,7 @@ final class AppModel {
     }
 
     func startDemo() {
+        freeAccountID = nil
         phase = .ready(Session(profile: nil, dataSource: DemoDataSource(), cache: nil))
     }
 
@@ -136,11 +154,13 @@ final class AppModel {
         ProtectedLocation.wipe()
         try? keychain.removeAll()
         settings.reset()
+        freeAccountID = nil
         isLocked = false
         phase = .onboarding
     }
 
     private func makeSession(for profile: ServerProfile) async -> Session {
+        freeAccountID = profile.freeAccountID
         let server = profile.server
         let transport = URLSessionTransport(server: server)
         let authorizer = KeychainFireflyAuthorizer(store: credentials, profileID: profile.id, server: server, transport: transport)

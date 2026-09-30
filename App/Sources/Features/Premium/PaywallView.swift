@@ -6,36 +6,40 @@ import SwiftUI
 extension PremiumFeature {
     var title: LocalizedStringKey {
         switch self {
+        case .multipleAccounts: "Todas tus cuentas"
+        case .transfers: "Transferencias entre cuentas"
         case .budgets: "Presupuestos"
         case .billsAndPiggyBanks: "Facturas y huchas"
         case .splitTransactions: "Movimientos divididos"
         case .categoriesAndTags: "Categorías y etiquetas"
         case .rules: "Reglas automáticas"
+        case .recurringTransactions: "Movimientos recurrentes"
         case .reports: "Informes"
         case .widgets: "Widgets"
         case .multipleServers: "Varios servidores"
-        case .iCloudSync: "Modo sin servidor con iCloud"
         }
     }
 
     var systemImage: String {
         switch self {
+        case .multipleAccounts: "creditcard.and.123"
+        case .transfers: "arrow.left.arrow.right"
         case .budgets: "chart.pie"
         case .billsAndPiggyBanks: "calendar"
         case .splitTransactions: "arrow.triangle.branch"
         case .categoriesAndTags: "folder"
         case .rules: "bolt"
+        case .recurringTransactions: "repeat"
         case .reports: "chart.bar"
         case .widgets: "square.grid.2x2"
         case .multipleServers: "server.rack"
-        case .iCloudSync: "icloud"
         }
     }
 
     /// Funciones que aún no están disponibles (se muestran como "Próximamente").
     var isComingSoon: Bool {
         switch self {
-        case .rules, .reports, .widgets, .multipleServers, .iCloudSync: true
+        case .rules, .recurringTransactions, .reports, .widgets, .multipleServers: true
         default: false
         }
     }
@@ -72,7 +76,7 @@ struct PaywallView: View {
             LuzzyMark(size: 64)
             Text("Luzzy Premium")
                 .font(.system(.title, design: .rounded, weight: .bold))
-            Text("Apoya el desarrollo independiente y desbloquea todo. La privacidad y la seguridad siempre son gratis.")
+            Text("La versión gratuita incluye una cuenta con sus gastos e ingresos. Premium desbloquea todas tus cuentas y la planificación. La privacidad y la seguridad siempre son gratis.")
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)

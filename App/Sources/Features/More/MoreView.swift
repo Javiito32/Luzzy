@@ -13,6 +13,7 @@ struct MoreView: View {
     @State private var showingPaywall = false
     @State private var showingManageSubscriptions = false
     @State private var confirmingDisconnect = false
+    @State private var changingFreeAccount = false
 
     var body: some View {
         NavigationStack {
@@ -21,6 +22,12 @@ struct MoreView: View {
 
                 Section {
                     premiumRow
+                    if app.accessScope.isLimited {
+                        Button { changingFreeAccount = true } label: {
+                            SettingsLabel("Cambiar la cuenta gestionada", systemImage: "arrow.triangle.swap", color: .teal)
+                        }
+                        .foregroundStyle(.primary)
+                    }
                 }
 
                 Section("Organizar") {
@@ -57,6 +64,9 @@ struct MoreView: View {
             .navigationTitle("Más")
             .task { await loadInfo() }
             .sheet(isPresented: $showingPaywall) { PaywallView() }
+            .sheet(isPresented: $changingFreeAccount) {
+                FreeAccountPickerView(session: session, isChanging: true)
+            }
             .manageSubscriptionsSheet(isPresented: $showingManageSubscriptions)
             .confirmationDialog(disconnectQuestion, isPresented: $confirmingDisconnect, titleVisibility: .visible) {
                 Button(disconnectConfirmation, role: .destructive) {

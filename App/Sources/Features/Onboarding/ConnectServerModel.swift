@@ -68,7 +68,8 @@ final class ConnectServerModel {
             baseURL: baseURL,
             authMethod: method == .token ? .personalAccessToken : .oauth(clientID: clientID.trimmingCharacters(in: .whitespaces)),
             trust: trust,
-            createdAt: .now
+            createdAt: .now,
+            freeAccountID: nil
         )
 
         do {

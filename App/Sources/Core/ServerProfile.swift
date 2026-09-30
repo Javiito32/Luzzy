@@ -36,6 +36,8 @@ struct ServerProfile: Codable, Identifiable, Hashable, Sendable {
     var authMethod: AuthMethod
     var trust: Trust
     var createdAt: Date
+    /// Cuenta elegida para el plan gratuito (ausente en perfiles antiguos → nil).
+    var freeAccountID: String?
 
     var displayName: String { baseURL.host() ?? baseURL.absoluteString }
     var usesUnencryptedHTTP: Bool { baseURL.scheme == "http" }

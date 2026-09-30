@@ -16,12 +16,21 @@ struct DashboardView: View {
     let session: Session
     @Binding var selection: MainTabView.TabID
 
+    @Environment(AppModel.self) private var app
     @Environment(PurchaseManager.self) private var purchases
     @State private var resource = Resource<DashboardSnapshot>()
     @State private var showingNewTransaction = false
     private let period = DateInterval.month(containing: .now)
 
     var body: some View {
+        if let accountID = app.accessScope.limitedAccountID {
+            SingleAccountDashboardView(session: session, accountID: accountID, selection: $selection)
+        } else {
+            fullDashboard
+        }
+    }
+
+    private var fullDashboard: some View {
         NavigationStack {
             ScrollView {
                 LoadableView(state: resource.state, retry: load) { snapshot in

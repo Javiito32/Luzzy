@@ -10,6 +10,7 @@ struct MainTabView: View {
     }
 
     @State private var selection: TabID = .home
+    @Environment(AppModel.self) private var app
 
     var body: some View {
         TabView(selection: $selection) {
@@ -32,6 +33,13 @@ struct MainTabView: View {
             MoreView(session: session)
                 .tabItem { Label("Más", systemImage: "ellipsis") }
                 .tag(TabID.more)
+        }
+        // Plan gratuito sin cuenta elegida: se pide antes de mostrar datos.
+        .fullScreenCover(isPresented: Binding(
+            get: { app.accessScope.needsAccountSelection },
+            set: { _ in }
+        )) {
+            FreeAccountPickerView(session: session)
         }
     }
 }

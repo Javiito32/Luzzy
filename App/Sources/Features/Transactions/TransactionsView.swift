@@ -9,12 +9,15 @@ import SwiftUI
 final class TransactionsModel {
     var filter: TransactionFilter = .all
     var searchText = ""
+    /// Cuenta a la que se limita el listado (plan gratuito).
+    var accountID: EntityID?
     private(set) var groups: [TransactionGroup] = []
     private(set) var isLoading = false
     private(set) var hasMore = false
     private(set) var error: DataSourceError?
     private var page = 1
     private var loadedFilter: TransactionFilter?
+    private var loadedAccountID: EntityID?
 
     var visibleSections: [DaySection] {
         let query = searchText.trimmingCharacters(in: .whitespaces)
@@ -32,11 +35,11 @@ final class TransactionsModel {
     }
 
     func reload(session: Session) async {
-        let query = TransactionQuery(filter: filter, page: 1, pageSize: 50)
+        let query = TransactionQuery(filter: filter, accountID: accountID, page: 1, pageSize: 50)
         let source = session.dataSource
         isLoading = true
         error = nil
-        if loadedFilter != filter { groups = [] }
+        if loadedFilter != filter || loadedAccountID != accountID { groups = [] }
         defer { isLoading = false }
         do {
             let result = try await session.fetcher.fetch(key: CacheKey.transactions(query), cached: { [weak self] hit in
@@ -46,6 +49,7 @@ final class TransactionsModel {
             })
             apply(result, replacing: true)
             loadedFilter = filter
+            loadedAccountID = accountID
         } catch let error as DataSourceError {
             self.error = error
         } catch {
@@ -58,7 +62,7 @@ final class TransactionsModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            let next = try await session.dataSource.transactions.transactions(TransactionQuery(filter: filter, page: page + 1, pageSize: 50))
+            let next = try await session.dataSource.transactions.transactions(TransactionQuery(filter: filter, accountID: accountID, page: page + 1, pageSize: 50))
             apply(next, replacing: false)
         } catch let error as DataSourceError {
             self.error = error
@@ -89,6 +93,7 @@ final class TransactionsModel {
 struct TransactionsView: View {
     let session: Session
 
+    @Environment(AppModel.self) private var app
     @State private var model = TransactionsModel()
     @State private var showingNewTransaction = false
     @State private var pendingDeletion: TransactionGroup?
@@ -102,7 +107,9 @@ struct TransactionsView: View {
                         Text("Todos").tag(TransactionFilter.all)
                         Text("Gastos").tag(TransactionFilter.withdrawals)
                         Text("Ingresos").tag(TransactionFilter.deposits)
-                        Text("Transferencias").tag(TransactionFilter.transfers)
+                        if !app.accessScope.isLimited {
+                            Text("Transferencias").tag(TransactionFilter.transfers)
+                        }
                     }
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
@@ -160,9 +167,13 @@ struct TransactionsView: View {
                 }
             }
             .refreshable { await model.reload(session: session) }
-            .task(id: model.filter) { await model.reload(session: session) }
+            .task(id: ReloadKey(filter: model.filter, accountID: app.accessScope.limitedAccountID)) {
+                model.accountID = app.accessScope.limitedAccountID
+                if app.accessScope.isLimited, model.filter == .transfers { model.filter = .all }
+                await model.reload(session: session)
+            }
             .sheet(isPresented: $showingNewTransaction) {
-                NewTransactionView(session: session) { _ in
+                NewTransactionView(session: session, lockedAccountID: app.accessScope.limitedAccountID) { _ in
                     Task { await model.reload(session: session) }
                 }
             }
@@ -180,6 +191,12 @@ struct TransactionsView: View {
             }
         }
     }
+}
+
+/// Clave de recarga: cambia al cambiar el filtro o la cuenta del plan.
+private struct ReloadKey: Equatable {
+    let filter: TransactionFilter
+    let accountID: EntityID?
 }
 
 /// Detalle de un movimiento con todas sus partes.

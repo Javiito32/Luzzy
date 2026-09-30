@@ -14,18 +14,22 @@ Los precios son provisionales: se fijan en App Store Connect. Los IDs están en 
 
 ## Gratis y Premium
 
-**Gratis**
-- Conexión (token u OAuth) y demo.
-- Inicio, cuentas y detalle de cuenta.
-- Movimientos: consultar, buscar, filtrar, crear y borrar movimientos simples.
-- Bloqueo con Face ID, modo discreto, caché cifrada y todo lo relativo a privacidad.
+La regla se aplica en la capa de app (`AccessScope`), por encima de la abstracción de datos, así que rige **igual con Firefly III que con el futuro modo iCloud**.
+
+**Gratis: una cuenta**
+- El usuario elige **una cuenta de activo** al empezar (se guarda con el perfil del servidor, en el Llavero). Puede cambiarla desde Cuentas o Más.
+- Inicio con el saldo de esa cuenta, lo gastado y lo ingresado en el mes, y sus últimos movimientos.
+- Movimientos de esa cuenta: consultar, buscar, filtrar, crear **gastos e ingresos** (con categoría, etiquetas y notas) y borrarlos.
+- Toda la privacidad: bloqueo con Face ID, modo discreto y caché cifrada.
 
 **Premium** (`PremiumFeature`)
-- Presupuestos (pantalla y asignación al crear movimientos).
-- Facturas y huchas.
+- Todas las cuentas (activos, gastos, ingresos, pasivos) y el patrimonio neto.
+- Transferencias entre cuentas.
+- Presupuestos, facturas y huchas.
 - Movimientos divididos.
-- Categorías y etiquetas (pantallas de gestión).
-- Próximamente: reglas, informes, widgets, varios servidores y modo sin servidor con iCloud.
+- Gestión de categorías y etiquetas.
+- Automatismos (próximamente): reglas y movimientos recurrentes.
+- Próximamente: informes, widgets y varios servidores.
 
 ## Implementación
 
@@ -36,7 +40,8 @@ Los precios son provisionales: se fijan en App Store Connect. Los IDs están en 
   - la compra de por vida tiene prioridad sobre las suscripciones.
 - `PaywallView` usa `SubscriptionStoreView` (interfaz nativa de Apple, con precios localizados, restauración y enlaces legales) y un botón para la compra de por vida.
 - Gestión de la suscripción: `manageSubscriptionsSheet` desde Más.
-- La comprobación siempre pasa por `purchases.isUnlocked(_:)`, así que se puede afinar por función sin tocar las pantallas.
+- La comprobación de funciones pasa por `purchases.isUnlocked(_:)`. El límite de una cuenta lo aplica `AppModel.accessScope` (`.full` o `.singleAccount(id)`): Inicio, Cuentas, Movimientos y el formulario de alta se adaptan a él.
+- El arranque espera a que StoreKit resuelva el plan (es local) para no mostrar la vista equivocada ni un instante.
 
 ## Pasos en App Store Connect
 
@@ -44,4 +49,4 @@ Los precios son provisionales: se fijan en App Store Connect. Los IDs están en 
 2. Crear el no consumible de por vida.
 3. Activar la opción de compartir en familia si se desea (en el `.storekit` está activada).
 4. Rellenar la etiqueta de privacidad: «Datos no recopilados».
-5. Publicar la política de privacidad y los términos, y actualizar `AppConfiguration`.
+5. Publicar `legal/privacy-policy.md` (rellenando nombre y email) y actualizar `AppConfiguration.privacyPolicyURL`. Los términos son el EULA estándar de Apple.

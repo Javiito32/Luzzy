@@ -21,6 +21,23 @@ final class NewTransactionModel {
     var splits: [SplitRow] = [SplitRow()]
     var source: AccountSelection?
     var destination: AccountSelection?
+    /// Cuenta fija del plan gratuito: origen de los gastos y destino de los ingresos.
+    var lockedAccount: AccountSelection?
+
+    var isSourceLocked: Bool { lockedAccount != nil && kind != .deposit }
+    var isDestinationLocked: Bool { lockedAccount != nil && kind == .deposit }
+
+    /// Coloca la cuenta fija en el lado que le corresponde según el tipo.
+    func applyLock() {
+        guard let lockedAccount else { return }
+        if kind == .deposit {
+            destination = lockedAccount
+            if source == lockedAccount { source = nil }
+        } else {
+            source = lockedAccount
+            if destination == lockedAccount { destination = nil }
+        }
+    }
     var budget: NamedReference?
     var tagsText = ""
     var notes = ""
@@ -112,6 +129,8 @@ final class NewTransactionModel {
 
 struct NewTransactionView: View {
     let session: Session
+    /// Plan gratuito: la única cuenta que se puede usar.
+    var lockedAccountID: EntityID? = nil
     let onSaved: (TransactionGroup) -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -135,9 +154,16 @@ struct NewTransactionView: View {
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
-                    .onChange(of: model.kind) {
+                    .onChange(of: model.kind) { oldKind, newKind in
+                        if lockedAccountID != nil, newKind == .transfer {
+                            // Las transferencias necesitan dos cuentas: son Premium.
+                            model.kind = oldKind
+                            showingPaywall = true
+                            return
+                        }
                         model.source = nil
                         model.destination = nil
+                        model.applyLock()
                     }
                 }
 
@@ -155,20 +181,28 @@ struct NewTransactionView: View {
 
                 Section {
                     TextField(descriptionPlaceholder, text: model.isSplit ? $model.groupTitle : $model.splits[0].description)
-                    AccountField(
-                        title: sourceTitle,
-                        selection: $model.source,
-                        kinds: model.sourceKinds,
-                        allowsNew: model.allowsNewSource,
-                        session: session
-                    )
-                    AccountField(
-                        title: destinationTitle,
-                        selection: $model.destination,
-                        kinds: model.destinationKinds,
-                        allowsNew: model.allowsNewDestination,
-                        session: session
-                    )
+                    if model.isSourceLocked {
+                        LockedAccountRow(title: sourceTitle, selection: model.source)
+                    } else {
+                        AccountField(
+                            title: sourceTitle,
+                            selection: $model.source,
+                            kinds: model.sourceKinds,
+                            allowsNew: model.allowsNewSource,
+                            session: session
+                        )
+                    }
+                    if model.isDestinationLocked {
+                        LockedAccountRow(title: destinationTitle, selection: model.destination)
+                    } else {
+                        AccountField(
+                            title: destinationTitle,
+                            selection: $model.destination,
+                            kinds: model.destinationKinds,
+                            allowsNew: model.allowsNewDestination,
+                            session: session
+                        )
+                    }
                     DatePicker("Fecha", selection: $model.date)
                 }
 
@@ -255,6 +289,11 @@ struct NewTransactionView: View {
             .sheet(isPresented: $showingPaywall) { PaywallView() }
             .task {
                 amountFocused = true
+                if let lockedAccountID {
+                    let account = try? await session.dataSource.accounts.account(id: lockedAccountID)
+                    model.lockedAccount = .existing(id: lockedAccountID, name: account?.name ?? "")
+                    model.applyLock()
+                }
                 if purchases.isUnlocked(.budgets) {
                     budgets = (try? await session.dataSource.budgets.budgets(in: .month(containing: .now))) ?? []
                 }
@@ -280,6 +319,21 @@ struct NewTransactionView: View {
 
     private var destinationTitle: LocalizedStringKey {
         model.kind == .withdrawal ? "Comercio" : "Hacia"
+    }
+}
+
+/// Cuenta fija del plan gratuito (no editable).
+private struct LockedAccountRow: View {
+    let title: LocalizedStringKey
+    let selection: AccountSelection?
+
+    var body: some View {
+        LabeledContent(title) {
+            HStack(spacing: 6) {
+                Text(selection?.displayName ?? "")
+                Image(systemName: "lock.fill").font(.caption).foregroundStyle(.tertiary)
+            }
+        }
     }
 }
 

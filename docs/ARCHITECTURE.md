@@ -45,7 +45,7 @@ public protocol FinanceDataSource: Sendable {
 
 1. Crear el módulo `LuzzyCloud` con modelos SwiftData persistentes (distintos de la caché) y `ModelConfiguration(cloudKitDatabase: .private("iCloud.<bundle>"))`.
 2. Implementar `CloudDataSource: FinanceDataSource`. El resumen, los presupuestos y las facturas se calculan en local (el `DemoStore` sirve de referencia).
-3. Añadir `DataSourceKind.iCloud` como opción en el onboarding (Premium: `PremiumFeature.iCloudSync`).
+3. Añadir `DataSourceKind.iCloud` como opción en el onboarding. El modo iCloud no es Premium en sí: aplica el mismo `AccessScope` (gratis = una cuenta).
 4. Opcional: importar desde Firefly usando el `FireflyDataSource` existente como origen.
 
 No hace falta tocar ninguna pantalla: `Session` recibe otro `FinanceDataSource`.

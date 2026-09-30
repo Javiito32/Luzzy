@@ -1,20 +1,26 @@
 import Foundation
 
-/// Funciones de Luzzy Premium. Lo que no aparece aquí es gratuito.
+/// Funciones de Luzzy Premium.
 ///
-/// Gratis: conexión al servidor, inicio, cuentas, movimientos (consultar,
-/// buscar, crear y editar movimientos simples), bloqueo con Face ID, modo
-/// discreto y toda la protección de privacidad. La privacidad nunca es de pago.
+/// Plan gratuito (igual con Firefly III que con el futuro modo iCloud):
+/// UNA cuenta de activo elegida por el usuario, con sus gastos e ingresos
+/// (consultar, buscar, crear y borrar). Sin transferencias, sin
+/// planificación y sin automatismos.
+///
+/// La privacidad nunca es de pago: bloqueo, modo discreto y cifrado local
+/// están en ambos planes.
 public enum PremiumFeature: String, Sendable, CaseIterable, Identifiable {
+    case multipleAccounts
+    case transfers
     case budgets
     case billsAndPiggyBanks
     case splitTransactions
     case categoriesAndTags
     case rules
+    case recurringTransactions
     case reports
     case widgets
     case multipleServers
-    case iCloudSync
 
     public var id: String { rawValue }
 }

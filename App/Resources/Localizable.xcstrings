@@ -201,16 +201,6 @@
         }
       }
     },
-    "Apoya el desarrollo independiente y desbloquea todo. La privacidad y la seguridad siempre son gratis.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Support independent development and unlock everything. Privacy and security are always free."
-          }
-        }
-      }
-    },
     "Ayer": {
       "localizations": {
         "en": {
@@ -367,6 +357,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cache cleared"
+          }
+        }
+      }
+    },
+    "Cambiar de cuenta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change account"
+          }
+        }
+      }
+    },
+    "Cambiar la cuenta gestionada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change the managed account"
           }
         }
       }
@@ -921,6 +931,16 @@
         }
       }
     },
+    "Elige tu cuenta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose your account"
+          }
+        }
+      }
+    },
     "Escribe la dirección de tu servidor.": {
       "localizations": {
         "en": {
@@ -1030,6 +1050,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Spent"
+          }
+        }
+      }
+    },
+    "Gastado este mes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spent this month"
           }
         }
       }
@@ -1164,6 +1194,16 @@
         }
       }
     },
+    "Ingresado este mes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Earned this month"
+          }
+        }
+      }
+    },
     "Ingreso": {
       "localizations": {
         "en": {
@@ -1260,6 +1300,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "The session expired or the token is invalid. Reconnect the server."
+          }
+        }
+      }
+    },
+    "La versión gratuita de Luzzy gestiona una cuenta: sus gastos e ingresos. Con Premium tendrás todas tus cuentas, transferencias y planificación.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free version of Luzzy manages one account: its expenses and income. With Premium you get all your accounts, transfers and planning."
+          }
+        }
+      }
+    },
+    "La versión gratuita incluye una cuenta con sus gastos e ingresos. Premium desbloquea todas tus cuentas y la planificación. La privacidad y la seguridad siempre son gratis.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free version includes one account with its expenses and income. Premium unlocks all your accounts and planning. Privacy and security are always free."
           }
         }
       }
@@ -1377,16 +1437,6 @@
         }
       }
     },
-    "Modo sin servidor con iCloud": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Serverless mode with iCloud"
-          }
-        }
-      }
-    },
     "Movimientos": {
       "localizations": {
         "en": {
@@ -1403,6 +1453,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Split transactions"
+          }
+        }
+      }
+    },
+    "Movimientos recurrentes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurring transactions"
           }
         }
       }
@@ -1443,6 +1503,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No (local network)"
+          }
+        }
+      }
+    },
+    "No hay cuentas de activo. Crea una en tu servidor y vuelve a intentarlo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no asset accounts. Create one on your server and try again."
           }
         }
       }
@@ -2080,6 +2150,16 @@
         }
       }
     },
+    "Todas tus cuentas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All your accounts"
+          }
+        }
+      }
+    },
     "Todavía no hay movimientos.": {
       "localizations": {
         "en": {
@@ -2170,6 +2250,16 @@
         }
       }
     },
+    "Transferencias entre cuentas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transfers between accounts"
+          }
+        }
+      }
+    },
     "Tras 1 minuto": {
       "localizations": {
         "en": {
@@ -2210,12 +2300,32 @@
         }
       }
     },
+    "Tu cuenta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your account"
+          }
+        }
+      }
+    },
     "Tu usuario no tiene permiso para esta acción.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your user doesn't have permission for this action."
+          }
+        }
+      }
+    },
+    "Tus cuentas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your accounts"
           }
         }
       }
@@ -2256,6 +2366,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "A split transaction needs a title."
+          }
+        }
+      }
+    },
+    "Usar todas mis cuentas con Premium": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use all my accounts with Premium"
           }
         }
       }

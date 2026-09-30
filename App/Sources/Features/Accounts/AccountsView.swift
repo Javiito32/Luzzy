@@ -8,8 +8,17 @@ struct AccountsView: View {
     @State private var kind: AccountKind = .asset
     private static let kinds: [AccountKind] = [.asset, .expense, .revenue, .liability]
     @State private var resources = Dictionary(uniqueKeysWithValues: Self.kinds.map { ($0, Resource<[Account]>()) })
+    @Environment(AppModel.self) private var app
 
     var body: some View {
+        if let accountID = app.accessScope.limitedAccountID {
+            SingleAccountView(session: session, accountID: accountID)
+        } else {
+            allAccounts
+        }
+    }
+
+    private var allAccounts: some View {
         NavigationStack {
             List {
                 Section {
@@ -187,6 +196,61 @@ struct AccountDetailView: View {
         let source = session.dataSource
         await resource.load(key: CacheKey.transactions(query), session: session) {
             try await source.transactions.transactions(query)
+        }
+    }
+}
+
+/// Cuentas en el plan gratuito: la cuenta elegida y la invitación a Premium.
+private struct SingleAccountView: View {
+    let session: Session
+    let accountID: EntityID
+
+    @State private var resource = Resource<Account>()
+    @State private var changingAccount = false
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    if let account = resource.value {
+                        NavigationLink(value: account) {
+                            AccountRow(account: account)
+                        }
+                    } else if let error = resource.state.error {
+                        Text(error.userMessage).foregroundStyle(.secondary)
+                    } else {
+                        ProgressView().frame(maxWidth: .infinity)
+                    }
+                } header: {
+                    Text("Tu cuenta")
+                } footer: {
+                    Button("Cambiar de cuenta") { changingAccount = true }
+                        .font(.footnote.weight(.semibold))
+                }
+
+                Section {
+                    PremiumTeaser(feature: .multipleAccounts)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                }
+            }
+            .navigationTitle("Cuentas")
+            .navigationDestination(for: Account.self) { account in
+                AccountDetailView(session: session, account: account)
+            }
+            .refreshable { await load() }
+            .task(id: accountID) { await load() }
+            .sheet(isPresented: $changingAccount) {
+                FreeAccountPickerView(session: session, isChanging: true)
+            }
+        }
+    }
+
+    private func load() async {
+        let source = session.dataSource
+        let accountID = accountID
+        await resource.load(key: "account.\(accountID)", session: session) {
+            try await source.accounts.account(id: accountID)
         }
     }
 }
